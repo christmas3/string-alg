@@ -21,10 +21,7 @@ cmake --build .
 ## Запуск тестов
 
 ```shell 
-./graph --gtest_filter=GraphSuit.KosarajuTest
-./graph --gtest_filter=GraphSuit.DemucronTest
-./graph --gtest_filter=GraphSuit.MstTest
-./graph --gtest_filter=GraphSuit.SptTest
+./graph --gtest_filter=StringSuit.BmTest
 ```
 
 # Docker
