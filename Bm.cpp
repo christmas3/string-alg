@@ -43,14 +43,6 @@ void Bm::fillShift(const char* pattern, size_t length)
     }
 }
 
-size_t Bm::getLength(const char* pattern)
-{
-    size_t length = 0;
-    while (*pattern++)
-        ++length;
-    return length;
-}
-
 void Bm::fillSuffix(const char* pattern, size_t length)
 {
     delete[] suffix_;
