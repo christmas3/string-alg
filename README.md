@@ -22,6 +22,7 @@ cmake --build .
 
 ```shell 
 ./graph --gtest_filter=StringSuit.BmTest
+./graph --gtest_filter=StringSuit.KmpTest
 ```
 
 # Docker
