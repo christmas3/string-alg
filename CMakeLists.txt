@@ -1,12 +1,12 @@
 cmake_minimum_required(VERSION 3.14)
-project(string)
+project(archive_file)
 
 set(CMAKE_CXX_STANDARD 11)
 set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -fsanitize=address -fno-omit-frame-pointer")
 
-add_executable(${PROJECT_NAME} main.cpp StringAlg.h StringTest.cpp Bm.h Bm.cpp Kmp.cpp Kmp.h)
+add_executable(${PROJECT_NAME} main.cpp)
 
-target_link_libraries(${PROJECT_NAME} gtest_main gtest pthread)
+target_link_libraries(${PROJECT_NAME} pthread)
 
-include(GoogleTest)
-gtest_discover_tests(${PROJECT_NAME})
+enable_testing()
+add_subdirectory(test)

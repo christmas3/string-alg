@@ -3,12 +3,11 @@
 #include "StringAlg.h"
 
 namespace string_alg {
-class Kmp
+class Kmp : public find<Kmp>
 {
-public:
-    SizeType operator()(const char* str, const char* pattern);
-
-private:
+    SizeType findImpl(const char* str, const char* pattern);
     static SizeType findPrefix(const char* str, SizeType strLength, SizeType prefixLength);
+
+    friend struct find;
 };
 } // namespace string_alg

@@ -2,7 +2,7 @@
 
 namespace string_alg {
 
-SizeType Bm::operator()(const char* str, const char* pattern)
+SizeType Bm::findImpl(const char* str, const char* pattern)
 {
     size_t patternLength = getLength(pattern);
     fillShift(pattern, patternLength);
