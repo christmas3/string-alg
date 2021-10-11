@@ -121,11 +121,30 @@ inline bool isStringEqual(const char* str1, size_t str1Size, const char* str2, s
     return cur == str1Size;
 }
 
+inline bool isStringEqual(const char* str1, const char* str2)
+{
+    int cur = 0;
+    while (str1[cur] && str2[cur] && str1[cur] == str2[cur]) {
+        ++cur;
+    }
+
+    return str1[cur] == str2[cur];
+}
+
 inline void copyString(const char* src, char* dst)
 {
     const char* srcPtr = src;
     char* dstPtr = dst;
     while (*dst++ = *src++) {}
+}
+
+inline void copyString(const char* src, char* dst, size_t size)
+{
+    const char* srcPtr = src;
+    char* dstPtr = dst;
+    while (size--) {
+        *dst++ = *src++;
+    }
 }
 
 inline char* copyWithPrefix(const char* src, size_t srcSize, const char* suffix, size_t suffixLength)
