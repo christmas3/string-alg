@@ -65,7 +65,7 @@ VectorArray<char> RleAdvancedCompress::compressImpl(const char* input, size_t si
             index = 0;
         }
         else {
-            if (!index) {
+            if (!index || char(result[index] - count) > 0) {
                 result.putBack(-count);
                 index = result.size() - 1;
             }
@@ -77,13 +77,13 @@ VectorArray<char> RleAdvancedCompress::compressImpl(const char* input, size_t si
                 result.putBack(input[i]);
             }
             while (j + 1 < size && input[j] != input[j + 1]) {
-                result[index] -= 1;
-                result.putBack(input[j]);
-                ++j;
                 if (result[index] == -128) {
                     index = 0;
                     break;
                 }
+                result[index] -= 1;
+                result.putBack(input[j]);
+                ++j;
             }
         }
     }
@@ -91,19 +91,27 @@ VectorArray<char> RleAdvancedCompress::compressImpl(const char* input, size_t si
     return result;
 }
 
-//VectorArray<char> RleAdvancedCompress::decompressImpl(const char* input, size_t size)
-//{
-//    VectorArray<char> result(size);
-//
-//    size_t i = 0;
-//    while (i < size) {
-//        if (input[i] == '-') {
-//            int count = input[++i];
-//            while (count--) {
-//                result.putBack(input[++i]);
-//            }
-//        }
-//    }
-//}
+VectorArray<char> RleAdvancedCompress::decompressImpl(const char* input, size_t size)
+{
+    VectorArray<char> result(size);
+
+    size_t i = 0;
+    while (i < size) {
+        int count = input[i++];
+        if (count < 0) {
+            while (count++) {
+                result.putBack(input[i++]);
+            }
+        }
+        else {
+            while (count--) {
+                result.putBack(input[i]);
+            }
+            ++i;
+        }
+    }
+
+    return result;
+}
 
 } // namespace string_alg

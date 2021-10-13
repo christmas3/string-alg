@@ -8,8 +8,8 @@ void testArchiveString(string_alg::archive<T>& arch, const char* input, size_t i
 {
     auto compressData = arch.compress(input, inputSize);
     EXPECT_TRUE(string_alg::isStringEqual(compressData.data(), compressData.size(), result, resultSize));
-    //    auto decompressData = arch.decompress(result, resultSize);
-    //    EXPECT_TRUE(string_alg::isStringEqual(decompressData.data(), decompressData.size(), input, inputSize));
+    auto decompressData = arch.decompress(result, resultSize);
+    EXPECT_TRUE(string_alg::isStringEqual(decompressData.data(), decompressData.size(), input, inputSize));
 }
 
 template<typename T>
@@ -97,6 +97,15 @@ TEST(ArchiveTestSuit, RleAdvancedTest)
     }
 
     testArchiveString(rleAdvanced, input.c_str(), 256, res, 258);
+}
+
+TEST(ArchiveTestSuit, RleAdvancedFileTest)
+{
+    string_alg::RleAdvancedCompress rleAdvanced;
+
+    for (const auto* input : { "../../test/test_files/file1", "../../test/test_files/file2" }) {
+        testArchiveFile(input, rleAdvanced, ".rle2");
+    }
 }
 
 TEST(ArchiveTestSuit, toStringTest)
