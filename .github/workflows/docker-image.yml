@@ -12,4 +12,4 @@ jobs:
       - name: Build the testing image
         run: docker build . --file Dockerfile --tag testing
       - name: Run tests
-        run: docker run -w ./test --rm -t testing ./archive_fileTest
+        run: docker run --rm -t testing 'cd ./test;./archive_fileTest'
