@@ -2,6 +2,9 @@
 
 - Алгоритм Бойера-Мура
 - Алгоритм Кнута-Морриса-Пратта
+- Алгоритм сжатия Rle
+- Алгоритм сжатия RleAdvanced
+- Программа для сжатия и распаковки файлов с помощью алгоритмов Rle и RleAdvanced
 
 # Зависимости сборки
 
@@ -18,11 +21,18 @@ cmake ..
 cmake --build .
 ```
 
-## Запуск тестов
+# Запуск тестов
+
+```shell
+cd ./test 
+./archive_fileTest
+```
+
+# Запуск программы
 
 ```shell 
-./graph --gtest_filter=StringSuit.BmTest
-./graph --gtest_filter=StringSuit.KmpTest
+./archive_file [-1|-2] filename         - архивация filename в filename.arch. Параметры -1 - алгоритм Rle; -2 - алгоритм RleAdvanced
+./archive_file [-1|-2] -d filename.arch - разархивация filename.arch в filename
 ```
 
 # Docker

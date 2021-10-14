@@ -5,12 +5,48 @@
 #include "Rle.h"
 #include "StringAlg.h"
 
+enum OperationType
+{
+    Compress,
+    Decompress
+};
+
+template<typename T>
+bool doOperation(string_alg::archive<T>& arch, OperationType type, const char* filename)
+{
+    char* outFile = nullptr;
+    bool result = false;
+    const char suffix[] = ".arch";
+    if (type == Compress) {
+        outFile = string_alg::copyWithPrefix(filename, string_alg::getLength(filename), suffix, sizeof(suffix));
+        result = string_alg::compressFile(filename, outFile, arch);
+    }
+    else {
+        string_alg::Kmp kmp;
+        auto pos = kmp(filename, suffix);
+        if (pos == string_alg::kNpos) {
+            std::cerr << "invalid archive file format. Must be .arch" << std::endl;
+            result = false;
+        }
+        else {
+            outFile = new char[pos + 1];
+            string_alg::copyString(filename, outFile, pos);
+            outFile[pos] = '\0';
+            std::cerr << "outFile: " << outFile << std::endl;
+            result = string_alg::decompressFile(filename, outFile, arch);
+        }
+    }
+
+    delete[] outFile;
+    return result;
+}
+
 int main(int argc, char** argv)
 {
     if (argc == 1) {
         auto progName = basename(argv[0]);
         std::cerr << "Usage:" << std::endl
-                  << progName << " [-1|-2] filename\t\t\t - for compress filename into filename.arch. -1 - rle alg; -2 - rle advanced alg"
+                  << progName << " [-1|-2] filename\t\t\t - for compress filename into filename.arch -1 - rle alg; -2 - rle advanced alg"
                   << std::endl
                   << progName << " [-1|-2] -d filename.arch\t - for decompress filename.arch into filename";
         return 1;
@@ -22,11 +58,7 @@ int main(int argc, char** argv)
         RleAdvanced
     } algType = Rle;
 
-    enum
-    {
-        Compress,
-        Decompress
-    } operationType = Compress;
+    OperationType operationType = Compress;
 
     char* filename = nullptr;
 
@@ -69,33 +101,16 @@ int main(int argc, char** argv)
     std::cerr << "operationType: " << operationType << std::endl;
     std::cerr << "filename: " << filename << std::endl;
 
-    char* outFile = nullptr;
     bool result = false;
-
-    const char suffix[] = ".arch";
 
     if (algType == Rle) {
         string_alg::RleCompress rle;
-        if (operationType == Compress) {
-            outFile = string_alg::copyWithPrefix(filename, string_alg::getLength(filename), suffix, sizeof(suffix));
-            result = string_alg::compressFile(filename, outFile, rle);
-        }
-        else {
-            string_alg::Kmp kmp;
-            auto pos = kmp(filename, suffix);
-            if (pos == string_alg::kNpos) {
-                std::cerr << "invalid archive file format. Must be .arch" << std::endl;
-                return -1;
-            }
-            outFile = new char[pos + 1];
-            string_alg::copyString(filename, outFile, pos);
-            outFile[pos] = '\0';
-            std::cerr << "outFile: " << outFile << std::endl;
-            result = string_alg::decompressFile(filename, outFile, rle);
-        }
+        result = doOperation(rle, operationType, filename);
     }
-
-    delete[] outFile;
+    else {
+        string_alg::RleAdvancedCompress rleAdvanced;
+        result = doOperation(rleAdvanced, operationType, filename);
+    }
 
     return !result;
 }
