@@ -12,4 +12,4 @@ jobs:
       - name: Build the testing image
         run: docker build . --file Dockerfile --tag testing
       - name: Run tests
-        run: docker run --rm -t testing ./string
+        run: docker run --rm -t testing ./archive_fileTest

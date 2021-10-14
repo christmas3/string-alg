@@ -6,7 +6,7 @@ namespace string_alg {
 
 static const char kDelimiter = '@';
 
-SizeType Kmp::operator()(const char* str, const char* pattern)
+SizeType Kmp::findImpl(const char* str, const char* pattern)
 {
     auto patternLength = getLength(pattern);
     auto strLength = getLength(str);

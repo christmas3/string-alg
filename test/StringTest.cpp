@@ -1,13 +1,10 @@
 #include <gtest/gtest.h>
 
-#include "Bm.h"
-#include "Kmp.h"
-
-using BmSearch = string_alg::find<string_alg::Bm>;
-using KmpSearch = string_alg::find<string_alg::Kmp>;
+#include "../Bm.h"
+#include "../Kmp.h"
 
 template<typename T>
-void testSearchSubstr(T& search)
+void testSearchSubstr(string_alg::find<T>& search)
 {
     EXPECT_EQ(search("KOLOLOKOLOKOLOKOL", "KOLOKOL"), 6);
     EXPECT_EQ(search("GCATCGCAGAGAGTATACAGTACG", "GCAGAGAG"), 5);
@@ -20,12 +17,12 @@ void testSearchSubstr(T& search)
 
 TEST(StringSuit, BmTest)
 {
-    BmSearch search;
+    string_alg::Bm search;
     testSearchSubstr(search);
 }
 
 TEST(StringSuit, KmpTest)
 {
-    KmpSearch search;
+    string_alg::Kmp search;
     testSearchSubstr(search);
 }

@@ -9,3 +9,5 @@ WORKDIR /src/testing/build
 
 RUN cmake .. && \
     cmake --build .
+
+WORKDIR /src/testing/build/test
